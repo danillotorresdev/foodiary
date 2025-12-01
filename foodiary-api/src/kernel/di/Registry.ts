@@ -1,5 +1,24 @@
 import { Constructor } from '@shared/types/Constructor';
 
+/**
+ * A singleton registry that manages dependency injection for the application.
+ *
+ * @remarks
+ * The Registry class provides a centralized way to register and resolve class dependencies.
+ * It uses reflection metadata to automatically detect constructor dependencies and creates
+ * instances with their dependencies injected.
+ *
+ * @example
+ * ```typescript
+ * const registry = Registry.getInstance();
+ *
+ * // Register a class
+ * registry.register(MyService);
+ *
+ * // Resolve an instance with dependencies injected
+ * const service = registry.resolve(MyService);
+ * ```
+ */
 export class Registry {
   private static instance: Registry | undefined;
 
