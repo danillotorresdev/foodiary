@@ -3,14 +3,15 @@ service: foodiary-api
 
 provider:
   name: aws
-  region: sa-east-1
-  runtime: nodejs22.x
+  region: us-east-1
+  runtime: nodejs24.x
   memorySize: 128
   stage: ${opt:stage, 'dev'}
   environment: ${file(./sls/config/env.yml)}
   iam:
     role: ${file(./sls/config/role.yml)}
   httpApi:
+    disableDefaultEndpoint: ${env:DISABLE_DEFAULT_APIGW_ENDPOINT, false}
     authorizers:
       CognitoAuthorizer:
         type: jwt
@@ -33,7 +34,9 @@ build:
 functions:
   - ${file(./sls/functions/auth.yml)}
   - ${file(./sls/functions/meals.yml)}
+  - ${file(./sls/functions/accounts.yml)}
 
 resources:
   - ${file(./sls/resources/UserPool.yml)}
   - ${file(./sls/resources/MainTable.yml)}
+  - ${file(./sls/resources/APIGWCustomDomain.yml)}
