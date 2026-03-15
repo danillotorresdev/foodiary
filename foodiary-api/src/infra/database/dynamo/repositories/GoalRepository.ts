@@ -1,5 +1,5 @@
 import { Goal } from '@application/entities/Goal';
-import { PutCommand, PutCommandInput } from '@aws-sdk/lib-dynamodb';
+import { GetCommand, PutCommand, PutCommandInput, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { dynamoClient } from '@infra/clients/dynamoClient';
 import { Injectable } from '@kernel/decorators/Injectable';
 import { AppConfig } from '@shared/config/AppConfig';
