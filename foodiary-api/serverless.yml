@@ -43,3 +43,6 @@ resources:
   - ${file(./sls/resources/MainTable.yml)}
   - ${file(./sls/resources/APIGWCustomDomain.yml)}
   - ${file(./sls/resources/MealsBucket.yml)}
+  # CDN (CloudFront): desativado enquanto a conta AWS não libera criação de distribuições.
+  # Descomente a linha abaixo quando o suporte resolver o bloqueio.
+  # - ${file(./sls/resources/MealsBucketCDN.yml)}
