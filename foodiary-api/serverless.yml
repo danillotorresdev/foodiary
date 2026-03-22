@@ -46,3 +46,5 @@ resources:
   # CDN (CloudFront): desativado enquanto a conta AWS não libera criação de distribuições.
   # Descomente a linha abaixo quando o suporte resolver o bloqueio.
   # - ${file(./sls/resources/MealsBucketCDN.yml)}
+  - ${file(./sls/resources/MealsQueue.yml)}
+  - ${file(./sls/resources/DLQAlarmsTopic.yml)}
