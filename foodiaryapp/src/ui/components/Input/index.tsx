@@ -1,5 +1,5 @@
 import { theme } from '@ui/styles/theme';
-import { NativeSyntheticEvent, TextInput, TextInputFocusEventData, TextInputProps } from 'react-native';
+import { NativeSyntheticEvent, TargetedEvent, TextInput, TextInputProps } from 'react-native';
 
 import { useState } from 'react';
 import { inputStyles } from './styles';
@@ -27,12 +27,12 @@ export function Input({
 }: IInputProps) {
   const [isFocused, setIsFocused] = useState(false);
 
-  function handleFocus(event: NativeSyntheticEvent<TextInputFocusEventData>) {
+  function handleFocus(event: NativeSyntheticEvent<TargetedEvent>) {
     setIsFocused(true);
     onFocus?.(event);
   }
 
-  function handleBlur(event: NativeSyntheticEvent<TextInputFocusEventData>) {
+  function handleBlur(event: NativeSyntheticEvent<TargetedEvent>) {
     setIsFocused(false);
     onBlur?.(event);
   }

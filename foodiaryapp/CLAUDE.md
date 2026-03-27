@@ -106,7 +106,7 @@ const styles = createVariants({
 
 ## Technology Stack
 
-- **Framework**: Expo ~53.0.22 with React Native 0.79.6
+- **Framework**: Expo ~54.0.33 with React Native 0.81.5
 - **Navigation**: React Navigation v7 (native-stack)
 - **Gestures**: React Native Gesture Handler + Reanimated
 - **UI**: Custom components with TypeScript-based variant system
