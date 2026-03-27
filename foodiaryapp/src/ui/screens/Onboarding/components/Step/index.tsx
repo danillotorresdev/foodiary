@@ -16,20 +16,14 @@ export function Step({ children }: { children: React.ReactNode }) {
 }
 
 export function StepHeader({ children }: { children: React.ReactNode }) {
-  return (
-    <View style={styles.header}>
-      {children}
-    </View>
-  );
+  return <View style={styles.header}>{children}</View>;
 }
 
 export function StepTitle({ children }: { children: string }) {
   return (
-    <View style={styles.header}>
-      <AppText size="3xl" weight="semiBold" style={styles.title}>
-        {children}
-      </AppText>
-    </View>
+    <AppText size="3xl" weight="semiBold" style={styles.title}>
+      {children}
+    </AppText>
   );
 }
 
@@ -48,7 +42,9 @@ interface IStepContentProps {
 
 export function StepContent({ children, position = 'end' }: IStepContentProps) {
   return (
-    <View style={[styles.content, position === 'center' && styles.contentCenter]}>
+    <View
+      style={[styles.content, position === 'center' && styles.contentCenter]}
+    >
       {children}
     </View>
   );
@@ -61,7 +57,9 @@ interface IStepFooterProps {
 
 export function StepFooter({ children, align = 'end' }: IStepFooterProps) {
   return (
-    <View style={[styles.footer, align === 'end' && { alignItems: 'flex-end' }]}>
+    <View
+      style={[styles.footer, align === 'end' && { alignItems: 'flex-end' }]}
+    >
       {children}
     </View>
   );
