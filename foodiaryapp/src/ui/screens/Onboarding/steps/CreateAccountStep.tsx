@@ -1,21 +1,13 @@
-
-import { AuthService } from '@app/services/AuthService';
+import { useAuth } from '@app/contexts/AuthContext/useAuth';
 import { ErrorCode } from '@app/types/ErrorCode';
 import { Button } from '@ui/components/Button';
 import { FormGroup } from '@ui/components/FormGroup';
 import { Input } from '@ui/components/Input';
-import React, { useRef } from 'react';
 import { isAxiosError } from 'axios';
+import React, { useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Alert, TextInput, View } from 'react-native';
-import {
-  Step,
-  StepContent,
-  StepFooter,
-  StepHeader,
-  StepSubtitle,
-  StepTitle,
-} from '../components/Step';
+import { Step, StepContent, StepFooter, StepHeader, StepSubtitle, StepTitle } from '../components/Step';
 import { OnboardingSchema } from '../schema';
 
 export function CreateAccountStep() {
@@ -24,12 +16,13 @@ export function CreateAccountStep() {
   const confirmPasswordInputRef = useRef<TextInput>(null);
 
   const form = useFormContext<OnboardingSchema>();
+  const { signUp } = useAuth();
 
-  const handleSubmit = form.handleSubmit(async (data) => {
+  const handleSubmit = form.handleSubmit(async data => {
     try {
       const birthDate = data.birthDate.toISOString().split('T')[0];
 
-      await AuthService.signUp({
+      await signUp({
         account: {
           email: data.account.email,
           password: data.account.password,
@@ -44,22 +37,14 @@ export function CreateAccountStep() {
           weight: Number(data.weight),
         },
       });
+
     } catch (error) {
-      if (
-        isAxiosError(error) &&
-        error.response?.data?.error?.code === ErrorCode.EMAIL_ALREADY_IN_USE
-      ) {
-        Alert.alert(
-          'Oops!',
-          'Este e-mail já está sendo usado por outro usuário.',
-        );
+      if (isAxiosError(error) && error.response?.data?.error?.code === ErrorCode.EMAIL_ALREADY_IN_USE) {
+        Alert.alert('Oops!', 'Este e-mail já está sendo usado por outro usuário.');
         return;
       }
 
-      Alert.alert(
-        'Oops!',
-        'Ocorreu um erro ao criar a sua conta, tente novamente.',
-      );
+      Alert.alert('Oops!', 'Ocorreu um erro ao criar a sua conta, tente novamente.');
     }
   });
 
@@ -128,9 +113,7 @@ export function CreateAccountStep() {
                   autoCorrect={false}
                   autoComplete="new-password"
                   returnKeyType="next"
-                  onSubmitEditing={() =>
-                    confirmPasswordInputRef.current?.focus()
-                  }
+                  onSubmitEditing={() => confirmPasswordInputRef.current?.focus()}
                   value={field.value}
                   onChangeText={field.onChange}
                   disabled={form.formState.isSubmitting}
@@ -143,10 +126,7 @@ export function CreateAccountStep() {
             control={form.control}
             name="account.confirmPassword"
             render={({ field, fieldState }) => (
-              <FormGroup
-                label="Confirmar Senha"
-                error={fieldState.error?.message}
-              >
+              <FormGroup label="Confirmar Senha" error={fieldState.error?.message}>
                 <Input
                   ref={confirmPasswordInputRef}
                   placeholder="Mínimo 8 caracteres"
