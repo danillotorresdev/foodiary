@@ -20,7 +20,7 @@ export function useSignInBottomSheetController(ref: React.Ref<ISignInBottomSheet
   const form = useForm({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      email: 'mateus@jstack.com.br',
+      email: 'danilloept+qa@gmail.com',
       password: '12345678',
     },
   });
