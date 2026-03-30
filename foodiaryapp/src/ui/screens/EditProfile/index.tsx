@@ -31,7 +31,7 @@ export function EditProfile() {
         <ScrollView style={styles.content}>
           <View style={styles.avatarContainer}>
             <Image
-              source={{ uri: 'https://github.com/maateusilva.png' }}
+              source={{ uri: 'https://github.com/danillotorresdev.png' }}
               style={styles.avatar}
             />
           </View>
@@ -46,7 +46,7 @@ export function EditProfile() {
                   error={fieldState.error?.message}
                 >
                   <Input
-                    placeholder="Mateus Silva"
+                    placeholder="Danillo Torres"
                     value={field.value}
                     onChangeText={field.onChange}
                   />
