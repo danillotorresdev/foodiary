@@ -3,18 +3,19 @@
 ## 1. Visao Completa - Todos os Servicos e Fluxos
 
 ```mermaid
+%%{init: {'themeVariables': { 'primaryTextColor': '#212121' }}}%%
 flowchart TB
-  subgraph CLIENT["Cliente (App Mobile React Native)"]
+  subgraph CLIENT["<b>Cliente (App Mobile React Native)</b>"]
     APP["Foodiary App"]
   end
 
-  subgraph AWS_EDGE["AWS Edge"]
+  subgraph AWS_EDGE["<b>AWS Edge</b>"]
     APIGW["API Gateway HTTP v2<br/><i>Roteamento + JWT Authorizer</i>"]
     CF["CloudFront CDN<br/><i>HTTPS + Cache + HTTP/2,3</i>"]
   end
 
-  subgraph AWS_COMPUTE["AWS Compute (Lambda)"]
-    subgraph HTTP_LAMBDAS["Lambdas HTTP (via API Gateway)"]
+  subgraph AWS_COMPUTE["<b>AWS Compute (Lambda)</b>"]
+    subgraph HTTP_LAMBDAS["<b>Lambdas HTTP (via API Gateway)</b>"]
       L_SIGNUP["signUp"]
       L_SIGNIN["signIn"]
       L_REFRESH["refreshToken"]
@@ -28,40 +29,40 @@ flowchart TB
       L_GET_MEAL["getMealById"]
     end
 
-    subgraph ASYNC_LAMBDAS["Lambdas Assincronas"]
+    subgraph ASYNC_LAMBDAS["<b>Lambdas Assincronas</b>"]
       L_S3_EVENT["onMealFileUploaded<br/><i>Trigger: S3 ObjectCreated</i>"]
       L_SQS["processMeal<br/><i>Trigger: SQS Message</i>"]
     end
 
-    subgraph COGNITO_LAMBDAS["Lambdas Cognito Trigger"]
+    subgraph COGNITO_LAMBDAS["<b>Lambdas Cognito Trigger</b>"]
       L_PRE_SIGNUP["preSignUpTrigger<br/><i>Auto-confirma user</i>"]
       L_PRE_TOKEN["preTokenGenerationTrigger<br/><i>Adiciona internalId ao JWT</i>"]
       L_CUSTOM_MSG["customMessageTrigger<br/><i>Email HTML customizado</i>"]
     end
   end
 
-  subgraph AWS_STORAGE["AWS Storage"]
+  subgraph AWS_STORAGE["<b>AWS Storage</b>"]
     DYNAMO["DynamoDB<br/>MainTable<br/><i>PK/SK + GSI1<br/>PAY_PER_REQUEST<br/>Point-in-Time Recovery</i>"]
     S3["S3 MealsBucket<br/><i>Fotos e audios<br/>DeletionPolicy: Retain</i>"]
   end
 
-  subgraph AWS_MESSAGING["AWS Messaging"]
+  subgraph AWS_MESSAGING["<b>AWS Messaging</b>"]
     SQS["SQS MealsQueue<br/><i>VisibilityTimeout: 130s<br/>maxReceiveCount: 2</i>"]
     DLQ["SQS MealsDLQ<br/><i>Retencao: 14 dias</i>"]
     SNS["SNS DLQAlarmsTopic<br/><i>Notificacao por email</i>"]
     CW["CloudWatch Alarm<br/><i>msgs na DLQ > 0</i>"]
   end
 
-  subgraph AWS_AUTH["AWS Auth"]
+  subgraph AWS_AUTH["<b>AWS Auth</b>"]
     COGNITO["Cognito User Pool<br/><i>Email login<br/>USER_PASSWORD_AUTH<br/>RefreshToken rotation<br/>Custom attribute: internalId</i>"]
   end
 
-  subgraph EXTERNAL["Servicos Externos"]
+  subgraph EXTERNAL["<b>Servicos Externos</b>"]
     OPENAI["OpenAI API<br/><i>gpt-4.1-mini (visao/texto)<br/>gpt-4o-mini-transcribe (audio)</i>"]
     SES["Amazon SES<br/><i>Emails transacionais</i>"]
   end
 
-  subgraph MONITORING["Monitoramento"]
+  subgraph MONITORING["<b>Monitoramento</b>"]
     EMAIL_ALERT["Email do Dev<br/><i>Alerta de falhas</i>"]
   end
 
@@ -125,19 +126,23 @@ flowchart TB
   CW -->|"AlarmAction"| SNS
   SNS -->|"email"| EMAIL_ALERT
 
-  style CLIENT fill:#e1f5fe,stroke:#0277bd
-  style AWS_EDGE fill:#e3f2fd,stroke:#1565c0
-  style AWS_COMPUTE fill:#e8f5e9,stroke:#2e7d32
-  style AWS_STORAGE fill:#fff3e0,stroke:#e65100
-  style AWS_MESSAGING fill:#fce4ec,stroke:#c62828
-  style AWS_AUTH fill:#f3e5f5,stroke:#6a1b9a
-  style EXTERNAL fill:#fffde7,stroke:#f9a825
-  style MONITORING fill:#efebe9,stroke:#4e342e
+  style CLIENT fill:#e1f5fe,stroke:#0277bd,color:#212121
+  style AWS_EDGE fill:#e3f2fd,stroke:#1565c0,color:#212121
+  style AWS_COMPUTE fill:#e8f5e9,stroke:#2e7d32,color:#212121
+  style AWS_STORAGE fill:#fff3e0,stroke:#e65100,color:#212121
+  style AWS_MESSAGING fill:#fce4ec,stroke:#c62828,color:#212121
+  style AWS_AUTH fill:#f3e5f5,stroke:#6a1b9a,color:#212121
+  style EXTERNAL fill:#fffde7,stroke:#f9a825,color:#212121
+  style MONITORING fill:#efebe9,stroke:#4e342e,color:#212121
+  style HTTP_LAMBDAS fill:#c8e6c9,stroke:#2e7d32,color:#212121
+  style ASYNC_LAMBDAS fill:#c8e6c9,stroke:#2e7d32,color:#212121
+  style COGNITO_LAMBDAS fill:#c8e6c9,stroke:#2e7d32,color:#212121
 ```
 
 ## 2. Fluxo Completo: Criar e Processar Refeicao
 
 ```mermaid
+%%{init: {'themeVariables': { 'primaryTextColor': '#212121' }}}%%
 sequenceDiagram
   participant App as App Mobile
   participant APIGW as API Gateway
@@ -220,6 +225,7 @@ sequenceDiagram
 ## 3. Fluxo Completo: Sign Up
 
 ```mermaid
+%%{init: {'themeVariables': { 'primaryTextColor': '#212121' }}}%%
 sequenceDiagram
   participant App as App Mobile
   participant APIGW as API Gateway
@@ -275,6 +281,7 @@ sequenceDiagram
 ## 4. Fluxo de Autenticacao (JWT)
 
 ```mermaid
+%%{init: {'themeVariables': { 'primaryTextColor': '#212121' }}}%%
 sequenceDiagram
   participant App as App Mobile
   participant APIGW as API Gateway
@@ -313,48 +320,49 @@ sequenceDiagram
 ## 5. Mapa de Servicos AWS e Conexoes
 
 ```mermaid
+%%{init: {'themeVariables': { 'primaryTextColor': '#212121' }}}%%
 flowchart TB
-  subgraph INTERNET["Internet"]
+  subgraph INTERNET["<b>Internet</b>"]
     MOBILE["App Mobile"]
     DEV_EMAIL["Email do Dev"]
   end
 
-  subgraph EDGE["Edge"]
+  subgraph EDGE["<b>Edge</b>"]
     R53_API["Route53<br/>api.foodiary.dev"]
     R53_CDN["Route53<br/>meals.foodiary.dev"]
     ACM_API["ACM Certificate<br/>(API)"]
     ACM_CDN["ACM Certificate<br/>(CDN)"]
   end
 
-  subgraph GATEWAY["Gateway Layer"]
+  subgraph GATEWAY["<b>Gateway Layer</b>"]
     APIGW["API Gateway HTTP v2<br/><br/>11 rotas HTTP<br/>JWT Authorizer<br/>Custom Domain"]
     CF["CloudFront<br/><br/>OAC → S3<br/>HTTP/2+3<br/>Compress"]
   end
 
-  subgraph COMPUTE["Compute"]
+  subgraph COMPUTE["<b>Compute</b>"]
     L_HTTP["11 HTTP Lambdas<br/>128MB / Node 24.x"]
     L_ASYNC["2 Async Lambdas<br/>(S3 event, SQS)"]
     L_COGNITO["3 Cognito Triggers"]
   end
 
-  subgraph DATA["Data"]
+  subgraph DATA["<b>Data</b>"]
     DYNAMO["DynamoDB MainTable<br/><br/>PK/SK + GSI1<br/>PAY_PER_REQUEST<br/>PITR 35 dias<br/>Deletion Protection"]
     S3["S3 MealsBucket<br/><br/>Retain policy<br/>Privado (OAC only)"]
   end
 
-  subgraph AUTH["Auth"]
+  subgraph AUTH["<b>Auth</b>"]
     COGNITO["Cognito User Pool<br/><br/>Email auth<br/>Secret client<br/>Refresh rotation<br/>custom:internalId"]
     SES["SES<br/>Emails"]
   end
 
-  subgraph ASYNC["Async Processing"]
+  subgraph ASYNC["<b>Async Processing</b>"]
     SQS_MAIN["SQS MealsQueue<br/>Visibility: 130s"]
     SQS_DLQ["SQS MealsDLQ<br/>Retencao: 14d"]
     CW["CloudWatch Alarm"]
     SNS["SNS Topic"]
   end
 
-  subgraph EXT["External"]
+  subgraph EXT["<b>External</b>"]
     OPENAI["OpenAI API"]
   end
 
@@ -391,12 +399,12 @@ flowchart TB
   SQS_MAIN -->|"RedrivePolicy"| SQS_DLQ
   SQS_DLQ --> CW --> SNS --> DEV_EMAIL
 
-  style INTERNET fill:#e1f5fe,stroke:#0277bd
-  style EDGE fill:#e0e0e0,stroke:#616161
-  style GATEWAY fill:#e3f2fd,stroke:#1565c0
-  style COMPUTE fill:#e8f5e9,stroke:#2e7d32
-  style DATA fill:#fff3e0,stroke:#e65100
-  style AUTH fill:#f3e5f5,stroke:#6a1b9a
-  style ASYNC fill:#fce4ec,stroke:#c62828
-  style EXT fill:#fffde7,stroke:#f9a825
+  style INTERNET fill:#e1f5fe,stroke:#0277bd,color:#212121
+  style EDGE fill:#e0e0e0,stroke:#616161,color:#212121
+  style GATEWAY fill:#e3f2fd,stroke:#1565c0,color:#212121
+  style COMPUTE fill:#e8f5e9,stroke:#2e7d32,color:#212121
+  style DATA fill:#fff3e0,stroke:#e65100,color:#212121
+  style AUTH fill:#f3e5f5,stroke:#6a1b9a,color:#212121
+  style ASYNC fill:#fce4ec,stroke:#c62828,color:#212121
+  style EXT fill:#fffde7,stroke:#f9a825,color:#212121
 ```

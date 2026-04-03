@@ -3,14 +3,15 @@
 ## 1. Camadas da Aplicacao
 
 ```mermaid
+%%{init: {'themeVariables': { 'primaryTextColor': '#212121' }}}%%
 graph TB
-  subgraph MAIN["main (Ponto de Entrada Lambda)"]
+  subgraph MAIN["<b>main (Ponto de Entrada Lambda)</b>"]
     direction TB
     LHA["lambdaHttpAdapter<br/><i>API Gateway v2 → Controller</i>"]
     LS3A["lambdaS3Adapter<br/><i>S3 Event → IFileEventHandler</i>"]
     LSQSA["lambdaSQSAdapter<br/><i>SQS Event → IQueueConsumer</i>"]
 
-    subgraph FUNCTIONS["functions/"]
+    subgraph FUNCTIONS["<b>functions/</b>"]
       F_AUTH["signUp · signIn · refreshToken<br/>forgotPassword · confirmForgotPassword"]
       F_MEALS_HTTP["createMeal · listMealsByDay<br/>getMealById"]
       F_MEALS_ASYNC["onMealFileUploaded<br/>processMeal"]
@@ -29,9 +30,9 @@ graph TB
     F_MEALS_ASYNC --> LSQSA
   end
 
-  subgraph APPLICATION["application (Logica de Negocio)"]
+  subgraph APPLICATION["<b>application (Logica de Negocio)</b>"]
     direction TB
-    subgraph CONTROLLERS["Controllers"]
+    subgraph CONTROLLERS["<b>Controllers</b>"]
       C_AUTH["SignUpController<br/>SignInController<br/>RefreshTokenController<br/>ForgotPasswordController<br/>ConfirmForgotPasswordController"]
       C_MEALS["CreateMealController<br/>ListMealsByDayController<br/>GetMealByIdController"]
       C_ACCOUNTS["GetMeController"]
@@ -39,24 +40,24 @@ graph TB
       C_GOALS["UpdateGoalController"]
     end
 
-    subgraph USECASES["Use Cases (Commands)"]
+    subgraph USECASES["<b>Use Cases (Commands)</b>"]
       UC_AUTH["SignUpUseCase<br/>SignInUseCase<br/>RefreshTokenUseCase<br/>ForgotPasswordUseCase<br/>ConfirmForgotPasswordUseCase"]
       UC_MEALS["CreateMealUseCase<br/>MealUploadedUseCase<br/>ProcessMealUseCase<br/>GetMealByIdUseCase"]
       UC_PROFILES["UpdateProfileUseCase"]
       UC_GOALS["UpdateGoalUseCase"]
     end
 
-    subgraph QUERIES["Queries (Leituras CQRS)"]
+    subgraph QUERIES["<b>Queries (Leituras CQRS)</b>"]
       Q1["GetProfileAndGoalQuery"]
       Q2["ListMealsByDayQuery"]
     end
 
-    subgraph ASYNC_HANDLERS["Handlers Assincronos"]
+    subgraph ASYNC_HANDLERS["<b>Handlers Assincronos</b>"]
       EH["MealUploadedFileEventHandler"]
       QC["MealsQueueConsumer"]
     end
 
-    subgraph DOMAIN["Dominio"]
+    subgraph DOMAIN["<b>Dominio</b>"]
       ENTITIES["Account · Profile · Goal · Meal"]
       SERVICES["GoalCalculator"]
       ERRORS["HttpError · ApplicationError<br/>EmailAlreadyInUse · InvalidCredentials<br/>ResourceNotFound · etc."]
@@ -75,23 +76,23 @@ graph TB
     UC_MEALS --> ENTITIES
   end
 
-  subgraph INFRA["infra (Implementacoes Externas)"]
+  subgraph INFRA["<b>infra (Implementacoes Externas)</b>"]
     direction TB
-    subgraph REPOS["Repositories"]
+    subgraph REPOS["<b>Repositories</b>"]
       R1["AccountRepository"]
       R2["ProfileRepository"]
       R3["GoalRepository"]
       R4["MealRepository"]
     end
 
-    subgraph ITEMS["Data Mappers (Items)"]
+    subgraph ITEMS["<b>Data Mappers (Items)</b>"]
       I1["AccountItem"]
       I2["ProfileItem"]
       I3["GoalItem"]
       I4["MealItem"]
     end
 
-    subgraph GATEWAYS["Gateways"]
+    subgraph GATEWAYS["<b>Gateways</b>"]
       GW_AUTH["AuthGateway<br/><i>→ Cognito</i>"]
       GW_STORAGE["MealsFileStorageGateway<br/><i>→ S3</i>"]
       GW_QUEUE["MealsQueueGateway<br/><i>→ SQS</i>"]
@@ -104,7 +105,7 @@ graph TB
     REPOS --> ITEMS
   end
 
-  subgraph KERNEL_SHARED["kernel + shared (Base)"]
+  subgraph KERNEL_SHARED["<b>kernel + shared (Base)</b>"]
     direction TB
     REGISTRY["Registry<br/><i>Container DI Singleton</i>"]
     DEC_INJ["@Injectable()"]
@@ -130,16 +131,25 @@ graph TB
   GATEWAYS --> APP_CONFIG
   REPOS --> APP_CONFIG
 
-  style MAIN fill:#e3f2fd,stroke:#1565c0
-  style APPLICATION fill:#e8f5e9,stroke:#2e7d32
-  style INFRA fill:#fff3e0,stroke:#e65100
-  style KERNEL_SHARED fill:#f3e5f5,stroke:#6a1b9a
-  style DOMAIN fill:#e8f5e9,stroke:#1b5e20
+  style MAIN fill:#e3f2fd,stroke:#1565c0,color:#212121
+  style APPLICATION fill:#e8f5e9,stroke:#2e7d32,color:#212121
+  style INFRA fill:#fff3e0,stroke:#e65100,color:#212121
+  style KERNEL_SHARED fill:#f3e5f5,stroke:#6a1b9a,color:#212121
+  style DOMAIN fill:#e8f5e9,stroke:#1b5e20,color:#212121
+  style FUNCTIONS fill:#bbdefb,stroke:#1565c0,color:#212121
+  style CONTROLLERS fill:#c8e6c9,stroke:#2e7d32,color:#212121
+  style USECASES fill:#c8e6c9,stroke:#2e7d32,color:#212121
+  style QUERIES fill:#c8e6c9,stroke:#2e7d32,color:#212121
+  style ASYNC_HANDLERS fill:#c8e6c9,stroke:#2e7d32,color:#212121
+  style REPOS fill:#ffe0b2,stroke:#e65100,color:#212121
+  style ITEMS fill:#ffe0b2,stroke:#e65100,color:#212121
+  style GATEWAYS fill:#ffe0b2,stroke:#e65100,color:#212121
 ```
 
 ## 2. Estrutura de Pastas
 
 ```mermaid
+%%{init: {'themeVariables': { 'primaryTextColor': '#212121' }}}%%
 graph LR
   ROOT["foodiary-api/"]
 
@@ -157,9 +167,9 @@ graph LR
   SRC --> INF["infra/<br/>clients · database/dynamo<br/>gateways · ai · emails"]
   SRC --> MN["main/<br/>adapters · functions · utils"]
 
-  style ROOT fill:#f5f5f5,stroke:#333
-  style SLS fill:#fff3e0,stroke:#e65100
-  style SRC fill:#e3f2fd,stroke:#1565c0
+  style ROOT fill:#f5f5f5,stroke:#333,color:#212121
+  style SLS fill:#fff3e0,stroke:#e65100,color:#212121
+  style SRC fill:#e3f2fd,stroke:#1565c0,color:#212121
 ```
 
 ## 3. DynamoDB - Single Table Design
@@ -168,6 +178,7 @@ Chaves da tabela: **PK** (HASH), **SK** (RANGE), **GSI1PK** / **GSI1SK** no indi
 Evite nomes `PK`/`SK` dentro do `erDiagram` do Mermaid — o parser trata como palavras reservadas.
 
 ```mermaid
+%%{init: {'themeVariables': { 'primaryTextColor': '#212121' }}}%%
 erDiagram
   MainTable {
     string partitionKey
