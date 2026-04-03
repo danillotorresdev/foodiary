@@ -62,9 +62,6 @@ export class SignUpUseCase {
 
       account.externalId = externalId;
 
-
-
-
       await this.signUpUow.run({
         account,
         goal,
