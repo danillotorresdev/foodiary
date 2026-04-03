@@ -164,42 +164,45 @@ graph LR
 
 ## 3. DynamoDB - Single Table Design
 
+Chaves da tabela: **PK** (HASH), **SK** (RANGE), **GSI1PK** / **GSI1SK** no indice GSI1.  
+Evite nomes `PK`/`SK` dentro do `erDiagram` do Mermaid — o parser trata como palavras reservadas.
+
 ```mermaid
 erDiagram
   MainTable {
-    string PK "Partition Key (HASH)"
-    string SK "Sort Key (RANGE)"
-    string GSI1PK "Global Secondary Index 1 PK"
-    string GSI1SK "Global Secondary Index 1 SK"
-    string type "Account | Profile | Goal | Meal"
+    string partitionKey
+    string sortKey
+    string gsi1Pk
+    string gsi1Sk
+    string entityType
   }
 
   Account {
-    string PK "ACCOUNT#{id}"
-    string SK "ACCOUNT#{id}"
-    string GSI1PK "ACCOUNT#{email}"
-    string GSI1SK "ACCOUNT#{email}"
+    string partitionKey
+    string sortKey
+    string gsi1Pk
+    string gsi1Sk
     string id
     string email
-    string externalId "Cognito sub"
+    string externalId
     string createdAt
   }
 
   Profile {
-    string PK "ACCOUNT#{accountId}"
-    string SK "ACCOUNT#{accountId}#PROFILE"
+    string partitionKey
+    string sortKey
     string name
     string birthDate
-    string gender "MALE | FEMALE"
+    string gender
     number height
     number weight
     string activityLevel
-    string goal "LOSE | MAINTAIN | GAIN"
+    string goal
   }
 
   Goal {
-    string PK "ACCOUNT#{accountId}"
-    string SK "ACCOUNT#{accountId}#GOAL"
+    string partitionKey
+    string sortKey
     number calories
     number proteins
     number carbohydrates
@@ -207,20 +210,29 @@ erDiagram
   }
 
   Meal {
-    string PK "ACCOUNT#{accountId}#MEAL#{mealId}"
-    string SK "ACCOUNT#{accountId}#MEAL#{mealId}"
-    string GSI1PK "MEALS#{accountId}#YYYY-MM-DD"
-    string GSI1SK "MEAL#{mealId}"
-    string status "UPLOADING|QUEUED|PROCESSING|SUCCESS|FAILED"
-    string inputType "AUDIO | PICTURE"
+    string partitionKey
+    string sortKey
+    string gsi1Pk
+    string gsi1Sk
+    string status
+    string inputType
     string inputFileKey
     string name
     string icon
-    json foods
+    string foods
   }
 
-  MainTable ||--o{ Account : "armazena"
-  MainTable ||--o{ Profile : "armazena"
-  MainTable ||--o{ Goal : "armazena"
-  MainTable ||--o{ Meal : "armazena"
+  MainTable ||--o{ Account : armazena
+  MainTable ||--o{ Profile : armazena
+  MainTable ||--o{ Goal : armazena
+  MainTable ||--o{ Meal : armazena
 ```
+
+**Formato real das chaves (PK/SK) no codigo:**
+
+| Entidade | PK / SK | GSI1 |
+|----------|---------|------|
+| Account | `ACCOUNT#{id}` | email: `ACCOUNT#{email}` |
+| Profile | `ACCOUNT#{id}` / `...#PROFILE` | — |
+| Goal | `ACCOUNT#{id}` / `...#GOAL` | — |
+| Meal | `ACCOUNT#{id}#MEAL#{mealId}` | `MEALS#{id}#YYYY-MM-DD` / `MEAL#{mealId}` |
